@@ -16,6 +16,7 @@ namespace WhoIsCheating2
     class Program
     {
         private static bool lookUp;
+        private static bool isDetecting;
         private static int lastTick;
 
         private static List<Hero> heroList;
@@ -26,6 +27,17 @@ namespace WhoIsCheating2
         {
             Obj_AI_Base.OnNewPath += Obj_AI_Hero_OnNewPath;
             Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnGameInput += Game_OnGameInput;
+        }
+
+        static void Game_OnGameInput(GameInputEventArgs args)
+        {
+            if (args.Input.StartsWith("/StartDetection"))
+            {
+                isDetecting = true;
+                Game.PrintChat("<font color = \"#EEAD0E\">WhoIsCheating2 is now detecting players.</font>");
+                args.Process = false;
+            }
         }
 
         private static void DebugStatus(string message, ConsoleColor colour)
@@ -46,7 +58,6 @@ namespace WhoIsCheating2
 
             if (!lookUp)
             {
-                if (Game.ClockTime < 10) return;
                 heroList = new List<Hero>();
                 using (IEnumerator<Obj_AI_Hero> enumerator = ObjectManager.Get<Obj_AI_Hero>().GetEnumerator())
                 {
@@ -60,9 +71,11 @@ namespace WhoIsCheating2
                         }
                     }
                 }
-                Game.PrintChat("<font color = \"#0000FF\">WhoIsCheating2 by</font> <font color = \"#FF3300\">Mistejk</font> <font color = \"#0000FF\">loaded and initialised.</font>");
+                Game.PrintChat("<font color = \"#00E5EE\">WhoIsCheating2 by</font> <font color = \"#FF3300\">Mistejk</font> <font color = \"#00E5EE\">loaded and initialised.</font>");
+                Game.PrintChat("<font color = \"#00EE00\">Type /StartDetection in order to start detecting players!</font>");
                 lookUp = true;
             }
+            if (!isDetecting) return;
             ts = DateTime.Now - start;
             if (ts.TotalMilliseconds > 1000.0)
             {
@@ -106,7 +119,7 @@ namespace WhoIsCheating2
 
         private static void Obj_AI_Hero_OnNewPath(Obj_AI_Base sender, EventArgs args)
         {
-            if (!(sender is Obj_AI_Hero) || !lookUp) return;
+            if (!(sender is Obj_AI_Hero) || !lookUp || !isDetecting) return;
             ++heroList.Find(hero => hero.NetworkId == sender.NetworkId).Count;
 //            DebugStatus(String.Format("Increased Count for NId: {0}", sender.NetworkId), ConsoleColor.Yellow);
         }
