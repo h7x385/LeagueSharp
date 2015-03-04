@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
 using LeagueSharp;
 using LeagueSharp.Common;
 
@@ -21,23 +22,10 @@ namespace WhoIsCheating2
         private static TimeSpan ts;
         private static DateTime start;
 
-        private static Menu Config;
-
         private static void Main(string[] args)
         {
-            InitConfig();
             Obj_AI_Base.OnNewPath += Obj_AI_Hero_OnNewPath;
             Game.OnGameUpdate += Game_OnGameUpdate;
-            Game.PrintChat("<font color = \"#0000FF\">WhoIsCheating2 by</font> <font color = \"#FF3300\">Mistejk</font> <font color = \"#0000FF\">loaded.</font>");
-        }
-
-        private static void InitConfig()
-        {
-            Config = new Menu("WhoIsCheating2", "wic2", true);
-            Config.AddToMainMenu();
-            Config.AddItem(new MenuItem("checking", "Check players!")).SetValue(false).DontSave();
-            Config.AddItem(new MenuItem("checkme", "Check me")).SetValue(false).DontSave();
-
         }
 
         private static void DebugStatus(string message, ConsoleColor colour)
@@ -49,10 +37,7 @@ namespace WhoIsCheating2
 
         private static void Game_OnGameUpdate(EventArgs args)
         {
-            if (Config.Item("checking").GetValue<bool>())
-            {
-                Check();
-            }
+            Check();
         }
 
         private static void Check()
@@ -74,6 +59,7 @@ namespace WhoIsCheating2
                         }
                     }
                 }
+                Game.PrintChat("<font color = \"#0000FF\">WhoIsCheating2 by</font> <font color = \"#FF3300\">Mistejk</font> <font color = \"#0000FF\">loaded and initialised.</font>");
                 lookUp = true;
             }
             ts = DateTime.Now - start;
@@ -93,7 +79,7 @@ namespace WhoIsCheating2
                     Obj_AI_Hero hero = enumerator.Current;
                     if (hero != null && hero.IsValid)
                     {
-                        if (heroList.Find(y => y.NetworkId == hero.NetworkId).Count >= 10 && (hero.IsMe && Config.Item("checkme").GetValue<bool>()))
+                        if (heroList.Find(y => y.NetworkId == hero.NetworkId).Count >= 10)
                         {
                             ++heroList.Find(y => y.NetworkId == hero.NetworkId).Detections;
                             DebugStatus(
@@ -102,7 +88,13 @@ namespace WhoIsCheating2
                                     hero.NetworkId, heroList.Find(y => y.NetworkId == hero.NetworkId).Count,
                                     hero.ChampionName, heroList.Find(y => y.NetworkId == hero.NetworkId).Detections),
                                 ConsoleColor.Red);
-                            Game.PrintChat("Cheater detected: <font color = \"#FF0000\">{0}</font>. Detection {1}.", hero.ChampionName, heroList.Find(y => y.NetworkId == hero.NetworkId).Detections);
+                            //set your path for cheater log below
+                            File.AppendAllText(@"D:\cheaters.txt", String.Format(
+                                    "ID: {0}, Count: {1}, Champion: {2}, Detections: {3}, IGN: {4}, {5}/{6}/{7} on level {8}\r\n",
+                                    Game.Id, heroList.Find(y => y.NetworkId == hero.NetworkId).Count,
+                                    hero.ChampionName, heroList.Find(y => y.NetworkId == hero.NetworkId).Detections,
+                                    hero.Name, hero.ChampionsKilled, hero.Deaths, hero.Assists, hero.Level), System.Text.Encoding.UTF8);
+                            Game.PrintChat("Cheater detected: <font color = \"#FF0000\">{0}</font>. Detection {1}. Count {2}.", hero.ChampionName, heroList.Find(y => y.NetworkId == hero.NetworkId).Detections, heroList.Find(y => y.NetworkId == hero.NetworkId).Count);
                         }
                         heroList.Find(y => y.NetworkId == hero.NetworkId).Count = 0;
                     }
@@ -115,7 +107,7 @@ namespace WhoIsCheating2
         {
             if (!(sender is Obj_AI_Hero) || !lookUp) return;
             ++heroList.Find(hero => hero.NetworkId == sender.NetworkId).Count;
-            DebugStatus(String.Format("Increased Count for NId: {0}", sender.NetworkId), ConsoleColor.Yellow);
+//            DebugStatus(String.Format("Increased Count for NId: {0}", sender.NetworkId), ConsoleColor.Yellow);
         }
     }
 }
