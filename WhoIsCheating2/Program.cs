@@ -46,7 +46,7 @@ namespace WhoIsCheating2
 
             if (!lookUp)
             {
-                if (Game.Time < 10) return;
+                if (Game.ClockTime < 10) return;
                 heroList = new List<Hero>();
                 using (IEnumerator<Obj_AI_Hero> enumerator = ObjectManager.Get<Obj_AI_Hero>().GetEnumerator())
                 {
