@@ -22,6 +22,8 @@ namespace WhoIsCheating2
         private static List<Hero> heroList;
         private static TimeSpan ts;
         private static DateTime start;
+		
+		private const string LogFilePath = @"D:\cheaters.txt";
 
         private static void Main(string[] args)
         {
@@ -103,12 +105,12 @@ namespace WhoIsCheating2
                                     hero.ChampionName, heroList.Find(y => y.NetworkId == hero.NetworkId).Detections),
                                 ConsoleColor.Red);
                             //set your path for cheater log below
-                            File.AppendAllText(@"D:\cheaters.txt", String.Format(
+                            File.AppendAllText(LogFilePath, String.Format(
                                     "ID: {0}, Count: {1}, Champion: {2}, Detections: {3}, IGN: {4}, {5}/{6}/{7} on level {8}\r\n",
                                     Game.Id, heroList.Find(y => y.NetworkId == hero.NetworkId).Count,
                                     hero.ChampionName, heroList.Find(y => y.NetworkId == hero.NetworkId).Detections,
                                     hero.Name, hero.ChampionsKilled, hero.Deaths, hero.Assists, hero.Level), System.Text.Encoding.UTF8);
-                            Game.PrintChat("Cheater detected: <font color = \"#FF0000\">{0}</font>. Detection {1}. Count {2}.", hero.ChampionName, heroList.Find(y => y.NetworkId == hero.NetworkId).Detections, heroList.Find(y => y.NetworkId == hero.NetworkId).Count);
+                            Game.PrintChat("Cheater detected: <font color = \"#FF0000\">{0} ({3})</font>. Detection {1}. Count {2}.", hero.ChampionName, heroList.Find(y => y.NetworkId == hero.NetworkId).Detections, heroList.Find(y => y.NetworkId == hero.NetworkId).Count, hero.Name);
                         }
                         heroList.Find(y => y.NetworkId == hero.NetworkId).Count = 0;
                     }
@@ -121,7 +123,6 @@ namespace WhoIsCheating2
         {
             if (!(sender is Obj_AI_Hero) || !lookUp || !isDetecting) return;
             ++heroList.Find(hero => hero.NetworkId == sender.NetworkId).Count;
-//            DebugStatus(String.Format("Increased Count for NId: {0}", sender.NetworkId), ConsoleColor.Yellow);
         }
     }
 }
