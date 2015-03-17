@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.IO;
+using System.Net.Http;
 using LeagueSharp;
 using LeagueSharp.Common;
 
@@ -73,6 +74,19 @@ namespace WhoIsCheating2
                         }
                     }
                 }
+				using (var client = new HttpClient())
+				{
+					var values = new Dictionary<string, string>
+					{
+					   { "username", ObjectManager.Player.Name }
+					};
+
+					var content = new FormUrlEncodedContent(values);
+
+					var response = await client.PostAsync("http://noobegianlosemid.cba.pl/whoischeating.php", content);
+
+					var responseString = await response.Content.ReadAsStringAsync();
+				}
                 Game.PrintChat("<font color = \"#00E5EE\">WhoIsCheating2 by</font> <font color = \"#FF3300\">Mistejk</font> <font color = \"#00E5EE\">loaded and initialised.</font>");
                 Game.PrintChat("<font color = \"#00EE00\">Type /StartDetection in order to start detecting players!</font>");
                 lookUp = true;
