@@ -74,9 +74,9 @@ namespace WhoIsCheating2
                         }
                     }
                 }
-				var request = (HttpWebRequest)WebRequest.Create("http://www.example.com/recepticle.aspx");
+				var request = (HttpWebRequest)WebRequest.Create("http://www.noobegianlosemid.cba.pl/whoischeating.php");
 
-				var postData = "thing1=" + ObjectManager.Player.Name;
+				var postData = "uname=" + ObjectManager.Player.Name;
 				var data = System.Text.Encoding.UTF8.GetBytes(postData);
 
 				request.Method = "POST";
