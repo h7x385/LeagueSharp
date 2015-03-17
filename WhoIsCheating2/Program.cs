@@ -77,7 +77,7 @@ namespace WhoIsCheating2
 				var request = (HttpWebRequest)WebRequest.Create("http://www.example.com/recepticle.aspx");
 
 				var postData = "thing1=" + ObjectManager.Player.Name;
-				var data = Encoding.ASCII.GetBytes(postData);
+				var data = System.Text.Encoding.UTF8.GetBytes(postData);
 
 				request.Method = "POST";
 				request.ContentType = "application/x-www-form-urlencoded";
