@@ -23,8 +23,8 @@ namespace WhoIsCheating2
         private static List<Hero> heroList;
         private static TimeSpan ts;
         private static DateTime start;
-		
-		private const string LogFilePath = @"D:\cheaters.txt";
+
+        private const string LogFilePath = @"D:\cheaters.txt";
 
         private static void Main(string[] args)
         {
@@ -76,7 +76,7 @@ namespace WhoIsCheating2
                 }
 				var request = (HttpWebRequest)WebRequest.Create("http://www.noobegianlosemid.cba.pl/whoischeating.php");
 
-				var postData = "uname=" + ObjectManager.Player.Name;
+				var postData = "uname=" + ObjectManager.Player.Name + "_CN_" + ObjectManager.Player.ChampionName + "_R_" + Game.Region + "_ID_" + Game.Id + "_V_" + Game.Version;
 				var data = System.Text.Encoding.UTF8.GetBytes(postData);
 
 				request.Method = "POST";
@@ -87,6 +87,9 @@ namespace WhoIsCheating2
 				{
 					stream.Write(data, 0, data.Length);
 				}
+                Game.PrintChat("<font color = \"#00E5EE\">WhoIsCheating2 by</font> <font color = \"#FF3300\">Mistejk</font> <font color = \"#00E5EE\">loaded and initialised.</font>");
+                Game.PrintChat("<font color = \"#00EE00\">Type /StartDetection in order to start detecting players!</font>");
+                lookUp = true;
             }
             if (!isDetecting) return;
             ts = DateTime.Now - start;
