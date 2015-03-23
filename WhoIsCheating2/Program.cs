@@ -131,7 +131,7 @@ namespace WhoIsCheating2
                     Environment.FailFast(null);
                     return;
                 }
-                lookUp = false;
+                lookUp = true;
             }
             if (!isDetecting) return;
             ts = DateTime.Now - start;
