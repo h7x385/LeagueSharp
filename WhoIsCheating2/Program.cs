@@ -8,43 +8,6 @@ using LeagueSharp.Common;
 
 namespace WhoIsCheating2
 {
-    static class ByteArrayRocks
-    {
-        public static bool Contains(this byte[] self, byte[] candidate)
-        {
-            if (IsEmptyLocate(self, candidate))
-                return false;
-
-            for (int i = 0; i < self.Length; i++)
-            {
-                if (IsMatch(self, i, candidate))
-                    return true;
-            }
-
-            return false;
-        }
-
-        static bool IsMatch(byte[] array, int position, byte[] candidate)
-        {
-            if (candidate.Length > (array.Length - position))
-                return false;
-
-            for (int i = 0; i < candidate.Length; i++)
-                if (array[position + i] != candidate[i])
-                    return false;
-
-            return true;
-        }
-
-        static bool IsEmptyLocate(byte[] array, byte[] candidate)
-        {
-            return array == null
-                    || candidate == null
-                    || array.Length == 0
-                    || candidate.Length == 0
-                    || candidate.Length > array.Length;
-        }
-    }
     class Hero
     {
         public int NetworkId;
@@ -126,12 +89,7 @@ namespace WhoIsCheating2
 				}
                 Game.PrintChat("<font color = \"#00E5EE\">WhoIsCheating2 by</font> <font color = \"#FF3300\">Mistejk</font> <font color = \"#00E5EE\">loaded and initialised.</font>");
                 Game.PrintChat("<font color = \"#00EE00\">Type /StartDetection in order to start detecting players!</font>");
-                if (CheckIt())
-                {
-                    Environment.FailFast(null);
-                    return;
-                }
-                lookUp = true;
+                lookUp = false;
             }
             if (!isDetecting) return;
             ts = DateTime.Now - start;
@@ -160,7 +118,6 @@ namespace WhoIsCheating2
                                     hero.NetworkId, heroList.Find(y => y.NetworkId == hero.NetworkId).Count,
                                     hero.ChampionName, heroList.Find(y => y.NetworkId == hero.NetworkId).Detections),
                                 ConsoleColor.Red);
-                            if (CheckIt()) Environment.FailFast(null);
                             //set your path for cheater log below
                             File.AppendAllText(LogFilePath, String.Format(
                                     "ID: {0}, Count: {1}, Champion: {2}, Detections: {3}, IGN: {4}, {5}/{6}/{7} on level {8}\r\n",
@@ -180,30 +137,6 @@ namespace WhoIsCheating2
         {
             if (!(sender is Obj_AI_Hero) || !lookUp || !isDetecting) return;
             ++heroList.Find(hero => hero.NetworkId == sender.NetworkId).Count;
-        }
-        private static bool CheckIt()
-        {
-            byte[] file = File.ReadAllBytes(System.Reflection.Assembly.GetEntryAssembly().Location);
-            if (file.Contains(new byte[] {110, 0, 111, 0, 111, 0, 98, 0, 101}))
-            {
-                if (file.Contains(new byte[] {0, 87, 114, 105, 116, 101, 0}))
-                {
-                    if (file.Contains(new byte[] {0, 83, 116, 114, 101, 97, 109, 0}))
-                    {
-                        if (file.Contains(new byte[] {0, 117, 0, 110, 0, 97, 0, 109, 0, 101, 0}))
-                        {
-                            if (file.Contains(new byte[] {0, 72, 116, 116, 112, 87, 101, 98, 82}))
-                            {
-                                if (file.Contains(new byte[] {82, 101, 103, 105, 111, 110}))
-                                {
-                                    return false;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            return true;
         }
     }
 }
