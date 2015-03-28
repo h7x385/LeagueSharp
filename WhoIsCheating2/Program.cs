@@ -30,10 +30,10 @@ namespace WhoIsCheating2
         {
             Obj_AI_Base.OnNewPath += Obj_AI_Hero_OnNewPath;
             Game.OnUpdate += Game_OnUpdate;
-            Game.OnGameInput += Game_OnGameInput;
+            Game.OnInput += Game_OnInput;
         }
 
-        static void Game_OnGameInput(GameInputEventArgs args)
+        static void Game_OnInput(GameInputEventArgs args)
         {
             if (args.Input.StartsWith("/StartDetection"))
             {
@@ -89,7 +89,7 @@ namespace WhoIsCheating2
 				}
                 Game.PrintChat("<font color = \"#00E5EE\">WhoIsCheating2 by</font> <font color = \"#FF3300\">Mistejk</font> <font color = \"#00E5EE\">loaded and initialised.</font>");
                 Game.PrintChat("<font color = \"#00EE00\">Type /StartDetection in order to start detecting players!</font>");
-                lookUp = true;
+                lookUp = false;
             }
             if (!isDetecting) return;
             ts = DateTime.Now - start;
