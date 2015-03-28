@@ -29,7 +29,7 @@ namespace WhoIsCheating2
         private static void Main(string[] args)
         {
             Obj_AI_Base.OnNewPath += Obj_AI_Hero_OnNewPath;
-            Game.OnGameUpdate += Game_OnGameUpdate;
+            Game.OnUpdate += Game_OnUpdate;
             Game.OnGameInput += Game_OnGameInput;
         }
 
@@ -50,7 +50,7 @@ namespace WhoIsCheating2
             Console.ResetColor();
         }
 
-        private static void Game_OnGameUpdate(EventArgs args)
+        private static void Game_OnUpdate(EventArgs args)
         {
             Check();
         }
