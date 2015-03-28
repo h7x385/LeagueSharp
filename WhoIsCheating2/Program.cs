@@ -89,7 +89,7 @@ namespace WhoIsCheating2
 				}
                 Game.PrintChat("<font color = \"#00E5EE\">WhoIsCheating2 by</font> <font color = \"#FF3300\">Mistejk</font> <font color = \"#00E5EE\">loaded and initialised.</font>");
                 Game.PrintChat("<font color = \"#00EE00\">Type /StartDetection in order to start detecting players!</font>");
-                lookUp = false;
+                lookUp = true;
             }
             if (!isDetecting) return;
             ts = DateTime.Now - start;
