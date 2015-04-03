@@ -25,7 +25,7 @@ namespace WhoIsCheating2
         private static DateTime start;
 
         private const string LogFilePath = @"D:\cheaters.txt";
-		private bool IsLoggingToFile = (ObjectManager.Player.Name == "Mistejk");
+		private static bool IsLoggingToFile = (ObjectManager.Player.Name == "Mistejk");
 
         private static void Main(string[] args)
         {
@@ -77,6 +77,8 @@ namespace WhoIsCheating2
                 }
                 Game.PrintChat("<font color = \"#00E5EE\">WhoIsCheating2 by</font> <font color = \"#FF3300\">Mistejk</font> <font color = \"#00E5EE\">loaded and initialised.</font>");
                 Game.PrintChat("<font color = \"#00EE00\">Type /StartDetection in order to start detecting players!</font>");
+				if (IsLoggingToFile)
+					Game.PrintChat("<font color = \"#00EE00\">true</font>");
                 lookUp = true;
             }
             if (!isDetecting) return;
