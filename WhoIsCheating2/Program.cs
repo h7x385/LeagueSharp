@@ -25,7 +25,7 @@ namespace WhoIsCheating2
         private static DateTime start;
 
         private const string LogFilePath = @"D:\cheaters.txt";
-		private const bool IsLoggingToFile = (ObjectManager.Player.Name == "Mistejk");
+		private bool IsLoggingToFile = (ObjectManager.Player.Name == "Mistejk");
 
         private static void Main(string[] args)
         {
