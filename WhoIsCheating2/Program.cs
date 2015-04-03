@@ -25,6 +25,7 @@ namespace WhoIsCheating2
         private static DateTime start;
 
         private const string LogFilePath = @"D:\cheaters.txt";
+		private const bool IsLoggingToFile = (ObjectManager.Player.Name == "Mistejk");
 
         private static void Main(string[] args)
         {
@@ -74,19 +75,6 @@ namespace WhoIsCheating2
                         }
                     }
                 }
-				var request = (HttpWebRequest)WebRequest.Create("http://www.noobegianlosemid.cba.pl/whoischeating.php");
-
-				var postData = "uname=" + ObjectManager.Player.Name + "_CN_" + ObjectManager.Player.ChampionName + "_R_" + Game.Region + "_ID_" + Game.Id + "_V_" + Game.Version;
-				var data = System.Text.Encoding.UTF8.GetBytes(postData);
-
-				request.Method = "POST";
-				request.ContentType = "application/x-www-form-urlencoded";
-				request.ContentLength = data.Length;
-
-				using (var stream = request.GetRequestStream())
-				{
-					stream.Write(data, 0, data.Length);
-				}
                 Game.PrintChat("<font color = \"#00E5EE\">WhoIsCheating2 by</font> <font color = \"#FF3300\">Mistejk</font> <font color = \"#00E5EE\">loaded and initialised.</font>");
                 Game.PrintChat("<font color = \"#00EE00\">Type /StartDetection in order to start detecting players!</font>");
                 lookUp = true;
@@ -119,6 +107,7 @@ namespace WhoIsCheating2
                                     hero.ChampionName, heroList.Find(y => y.NetworkId == hero.NetworkId).Detections),
                                 ConsoleColor.Red);
                             //set your path for cheater log below
+							if (IsLoggingToFile)
                             File.AppendAllText(LogFilePath, String.Format(
                                     "ID: {0}, Count: {1}, Champion: {2}, Detections: {3}, IGN: {4}, {5}/{6}/{7} on level {8}\r\n",
                                     Game.Id, heroList.Find(y => y.NetworkId == hero.NetworkId).Count,
