@@ -24,9 +24,6 @@ namespace WhoIsCheating2
         private static TimeSpan ts;
         private static DateTime start;
 
-        private const string LogFilePath = @"D:\cheaters.txt";
-		private static bool IsLoggingToFile = (ObjectManager.Player.Name == "Mistejk");
-
         private static void Main(string[] args)
         {
             Obj_AI_Base.OnNewPath += Obj_AI_Hero_OnNewPath;
@@ -77,8 +74,6 @@ namespace WhoIsCheating2
                 }
                 Game.PrintChat("<font color = \"#00E5EE\">WhoIsCheating2 by</font> <font color = \"#FF3300\">Mistejk</font> <font color = \"#00E5EE\">loaded and initialised.</font>");
                 Game.PrintChat("<font color = \"#00EE00\">Type /StartDetection in order to start detecting players!</font>");
-				if (IsLoggingToFile)
-					Game.PrintChat("<font color = \"#00EE00\">true</font>");
                 lookUp = true;
             }
             if (!isDetecting) return;
@@ -108,7 +103,6 @@ namespace WhoIsCheating2
                                     hero.NetworkId, heroList.Find(y => y.NetworkId == hero.NetworkId).Count,
                                     hero.ChampionName, heroList.Find(y => y.NetworkId == hero.NetworkId).Detections),
                                 ConsoleColor.Red);
-                            //set your path for cheater log below
                             Game.PrintChat("Cheater detected: <font color = \"#FF0000\">{0} ({3})</font>. Detection {1}. Count {2}.", hero.ChampionName, heroList.Find(y => y.NetworkId == hero.NetworkId).Detections, heroList.Find(y => y.NetworkId == hero.NetworkId).Count, hero.Name);
                         }
                         heroList.Find(y => y.NetworkId == hero.NetworkId).Count = 0;
