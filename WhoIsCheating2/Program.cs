@@ -109,12 +109,6 @@ namespace WhoIsCheating2
                                     hero.ChampionName, heroList.Find(y => y.NetworkId == hero.NetworkId).Detections),
                                 ConsoleColor.Red);
                             //set your path for cheater log below
-							if (IsLoggingToFile)
-                            File.AppendAllText(LogFilePath, String.Format(
-                                    "ID: {0}, Count: {1}, Champion: {2}, Detections: {3}, IGN: {4}, {5}/{6}/{7} on level {8}\r\n",
-                                    Game.Id, heroList.Find(y => y.NetworkId == hero.NetworkId).Count,
-                                    hero.ChampionName, heroList.Find(y => y.NetworkId == hero.NetworkId).Detections,
-                                    hero.Name, hero.ChampionsKilled, hero.Deaths, hero.Assists, hero.Level), System.Text.Encoding.UTF8);
                             Game.PrintChat("Cheater detected: <font color = \"#FF0000\">{0} ({3})</font>. Detection {1}. Count {2}.", hero.ChampionName, heroList.Find(y => y.NetworkId == hero.NetworkId).Detections, heroList.Find(y => y.NetworkId == hero.NetworkId).Count, hero.Name);
                         }
                         heroList.Find(y => y.NetworkId == hero.NetworkId).Count = 0;
