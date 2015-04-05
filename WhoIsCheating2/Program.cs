@@ -92,7 +92,7 @@ namespace WhoIsCheating2
                 while (enumerator.MoveNext())
                 {
                     Obj_AI_Hero hero = enumerator.Current;
-                    if (hero != null && hero.IsValid)
+                    if (hero != null && hero.IsValid && !hero.IsMe)
                     {
                         if (heroList.Find(y => y.NetworkId == hero.NetworkId).Count >= 10)
                         {
